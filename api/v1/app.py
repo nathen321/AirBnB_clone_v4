@@ -5,7 +5,7 @@ It's time to start MY API!
 import os
 from models import storage
 from api.v1.views import app_views
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, jsonify
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
@@ -13,6 +13,10 @@ app.register_blueprint(app_views)
 @app.teardown_appcontext
 def teardown(self):
     storage.close()
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return jsonify({"error": "Not found"}), 404
 
 
 
